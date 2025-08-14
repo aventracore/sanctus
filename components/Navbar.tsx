@@ -16,6 +16,7 @@ const navItems = [
 ];
 
 const MPill: any = (motion as any).div;
+const MDiv: any = (motion as any).div;
 
 export default function Navbar() {
 	const pathname = usePathname();
@@ -34,6 +35,15 @@ export default function Navbar() {
 		if (!open) return;
 		const handleKey = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') setOpen(false);
+			if (e.key === 'Tab' && panelRef.current) {
+				const focusables = panelRef.current.querySelectorAll<HTMLElement>('a,button,select,input,textarea,[tabindex]:not([tabindex="-1"])');
+				const first = focusables[0];
+				const last = focusables[focusables.length - 1];
+				if (!first || !last) return;
+				const active = document.activeElement as HTMLElement | null;
+				if (!e.shiftKey && active === last) { e.preventDefault(); first.focus(); }
+				if (e.shiftKey && active === first) { e.preventDefault(); last.focus(); }
+			}
 		};
 		document.addEventListener('keydown', handleKey);
 		return () => document.removeEventListener('keydown', handleKey);
@@ -41,12 +51,20 @@ export default function Navbar() {
 
 	useEffect(() => {
 		if (!open) return;
-		const first = panelRef.current?.querySelector<HTMLElement>('a,button');
+		const first = panelRef.current?.querySelector<HTMLElement>('a,button,select,input,textarea,[tabindex]:not([tabindex="-1"])');
 		first?.focus();
 	}, [open]);
 
+	useEffect(() => {
+		// Lock body scroll when menu is open
+		if (open) {
+			document.body.style.overflow = 'hidden';
+			return () => { document.body.style.overflow = ''; };
+		}
+	}, [open]);
+
 	return (
-		<header className={`sticky top-0 z-50 transition-all ${scrolled ? 'backdrop-blur-lg bg-[rgba(10,16,32,0.5)] border-b border-border-subtle' : 'backdrop-blur-md bg-[rgba(10,16,32,0.25)]'}`}>
+		<header className={`sticky top-0 z-[90] transition-all ${scrolled ? 'backdrop-blur-lg bg-[rgba(10,16,32,0.55)] border-b border-border-subtle' : 'backdrop-blur-md bg-[rgba(10,16,32,0.35)]'}`}>
 			<div className="container-content flex items-center justify-between h-[64px] md:h-[72px]">
 				<Link href="/" className="flex items-center gap-2" aria-label="PulseTrack home">
 					<Logo className="h-6 w-auto" />
@@ -67,8 +85,16 @@ export default function Navbar() {
 				</button>
 			</div>
 			{open && (
-				<div role="dialog" aria-modal="true" aria-label="Mobile menu" className="fixed inset-0 bg-black/40 md:hidden" onClick={() => setOpen(false)}>
-					<div ref={panelRef} className="absolute right-0 top-0 h-full w-80 bg-elev1 border-l border-border-subtle p-6 flex flex-col gap-4" onClick={(e) => e.stopPropagation()}>
+				<div role="dialog" aria-modal="true" aria-label="Mobile menu" className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm md:hidden" onClick={() => setOpen(false)}>
+					<MDiv
+						ref={panelRef as any}
+						initial={{ x: 320, opacity: 1 }}
+						animate={{ x: 0, opacity: 1 }}
+						exit={{ x: 320, opacity: 1 }}
+						transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+						className="absolute right-0 top-0 h-full w-80 bg-elev1/95 border-l border-border-subtle p-6 flex flex-col gap-4 shadow-softLg"
+						onClick={(e: any) => e.stopPropagation()}
+					>
 						<div className="flex items-center justify-between">
 							<Logo className="h-6" />
 							<button aria-label="Close menu" className="p-2 rounded-md bg-elev2" onClick={() => setOpen(false)}>
@@ -81,7 +107,7 @@ export default function Navbar() {
 							))}
 							<Link href="/dashboard" className="mt-4 inline-flex items-center justify-center rounded-md bg-gradient-to-r from-brand-from to-brand-to px-4 py-3 font-medium shadow-soft" onClick={() => setOpen(false)}>Try Demo</Link>
 						</nav>
-					</div>
+					</MDiv>
 				</div>
 			)}
 		</header>
