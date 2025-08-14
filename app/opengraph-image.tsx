@@ -1,8 +1,11 @@
-import { ImageResponse } from 'next/server';
+// @ts-ignore-next-line
+import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
+export const size = { width: 1200, height: 630 };
+export const contentType = 'image/png';
 
-export async function GET() {
+export default function Image() {
 	return new ImageResponse(
 		(
 			<div
@@ -22,6 +25,6 @@ export async function GET() {
 				PulseTrack
 			</div>
 		),
-		{ width: 1200, height: 630 }
+		{ width: size.width, height: size.height }
 	);
 }

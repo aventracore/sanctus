@@ -15,6 +15,8 @@ const navItems = [
 	{ href: '/contact', label: 'Contact' },
 ];
 
+const MPill: any = (motion as any).div;
+
 export default function Navbar() {
 	const pathname = usePathname();
 	const [scrolled, setScrolled] = useState(false);
@@ -54,7 +56,7 @@ export default function Navbar() {
 						<Link key={item.href} href={item.href} className={`relative text-sm hover:text-white transition-colors ${pathname === item.href ? 'text-white' : 'text-white/80'}`}>
 							{item.label}
 							{pathname === item.href && (
-								<motion.span layoutId="active-pill" className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-[2px] w-6 bg-gradient-to-r from-brand-from to-brand-to rounded-full" />
+								<MPill layoutId="active-pill" className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-[2px] w-6 bg-gradient-to-r from-brand-from to-brand-to rounded-full" />
 							)}
 						</Link>
 					))}

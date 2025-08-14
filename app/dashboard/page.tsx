@@ -34,7 +34,7 @@ export default function DashboardPage() {
 		if (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches) root.classList.add('dark');
 	}, [theme]);
 
-	const topPosts = useMemo(() => getTopPosts(), []);
+	const topPosts = useMemo(() => getTopPosts() as any, []);
 
 	if (!authed) {
 		return (

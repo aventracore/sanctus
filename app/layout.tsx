@@ -1,7 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { site } from '@/lib/seo';
-import DefaultSeoClient from '@/components/DefaultSeoClient';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { SkipToContent } from '@/components/SkipToContent';
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${inter.variable} font-sans bg-surface text-text`}> 
-				<DefaultSeoClient />
+
 				<SkipToContent />
 				<MotionProvider>
 					<Navbar />

@@ -13,15 +13,17 @@ export default function Testimonials() {
 		const id = setInterval(() => setI((p) => (p + 1) % items.length), 6000);
 		return () => clearInterval(id);
 	}, []);
+	const idx = items.length ? i % items.length : 0;
+	const current = items[idx]!;
 	return (
 		<div className="card p-6">
 			<figure>
-				<blockquote className="text-lg md:text-xl leading-relaxed">“{items[i].quote}”</blockquote>
-				<figcaption className="mt-3 text-white/70">{items[i].name} — {items[i].role}</figcaption>
+				<blockquote className="text-lg md:text-xl leading-relaxed">“{current.quote}”</blockquote>
+				<figcaption className="mt-3 text-white/70">{current.name} — {current.role}</figcaption>
 			</figure>
 			<div className="mt-4 flex gap-2" role="tablist" aria-label="Testimonials">
-				{items.map((_, idx) => (
-					<button key={idx} role="tab" aria-selected={idx === i} className={`h-2.5 w-2.5 rounded-full ${idx === i ? 'bg-white' : 'bg-white/40'}`} onClick={() => setI(idx)} aria-label={`Show quote ${idx + 1}`} />
+				{items.map((_, idx2) => (
+					<button key={idx2} role="tab" aria-selected={idx2 === idx} className={`h-2.5 w-2.5 rounded-full ${idx2 === idx ? 'bg-white' : 'bg-white/40'}`} onClick={() => setI(idx2)} aria-label={`Show quote ${idx2 + 1}`} />
 				))}
 			</div>
 		</div>

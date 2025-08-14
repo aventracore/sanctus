@@ -4,7 +4,7 @@ module.exports = {
 	testEnvironment: 'jsdom',
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 	moduleNameMapper: {
-		'\.(css|less|scss|sass)$': 'identity-obj-proxy',
+		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'^@/(.*)$': '<rootDir>/$1',
 		'^next/image$': '<rootDir>/test/__mocks__/next-image.tsx',
 	},
@@ -12,11 +12,13 @@ module.exports = {
 		'^.+\\.(ts|tsx)$': [
 			'ts-jest',
 			{
-				tsconfig: '<rootDir>/tsconfig.json',
-				diagnostics: false
+				isolatedModules: true,
+				tsconfig: { jsx: 'react-jsx', module: 'commonjs', esModuleInterop: true, allowJs: true },
+				diagnostics: false,
 			}
 		]
 	},
+	transformIgnorePatterns: ['/node_modules/(?!.*)'],
 	testPathIgnorePatterns: ['/node_modules/', '/.next/'],
 	collectCoverage: false
 };

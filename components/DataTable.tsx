@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export type PostRow = { id: string; platform: string; title: string; date: string; impressions: number; ctr: number };
 
+const MTr: any = (motion as any).tr ?? (motion as any)('tr');
+
 export default function DataTable({ rows }: { rows: PostRow[] }) {
 	const [sort, setSort] = useState<{ key: keyof PostRow; dir: 'asc' | 'desc' }>({ key: 'impressions', dir: 'desc' });
 	const [platform, setPlatform] = useState<string>('all');
@@ -56,13 +58,13 @@ export default function DataTable({ rows }: { rows: PostRow[] }) {
 					<tbody>
 						<AnimatePresence initial={false}>
 							{sorted.map((r) => (
-								<motion.tr key={r.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="border-t border-border-subtle">
+								<MTr key={r.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="border-t border-border-subtle">
 									<td className="py-2 pr-4 whitespace-nowrap">{r.title}</td>
 									<td className="py-2 pr-4">{r.platform}</td>
 									<td className="py-2 pr-4">{r.date}</td>
 									<td className="py-2 pr-4 text-right">{r.impressions.toLocaleString()}</td>
 									<td className="py-2 text-right">{(r.ctr * 100).toFixed(1)}%</td>
-								</motion.tr>
+								</MTr>
 							))}
 						</AnimatePresence>
 					</tbody>
