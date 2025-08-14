@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--brand-from: #0ea5e9;
+	--brand-to: #3b82f6;
+	--brand: linear-gradient(90deg, var(--brand-from), var(--brand-to));
+	--surface: #0b1020;
+	--elev1: #111529;
+	--elev2: #151a33;
+	--text: #e6eef9;
+	--border-subtle: rgba(255,255,255,0.08);
+	--border-strong: rgba(255,255,255,0.18);
+	--success: #22c55e;
+	--warning: #f59e0b;
+	--danger: #ef4444;
+}
+
+.dark {
+	--surface: #f7f9fc;
+	--elev1: #ffffff;
+	--elev2: #f2f4f7;
+	--text: #0b1220;
+	--border-subtle: rgba(0,0,0,0.08);
+	--border-strong: rgba(0,0,0,0.16);
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background: radial-gradient(1200px 600px at 20% -10%, rgba(14,165,233,0.15), transparent 50%),
+		radial-gradient(1000px 500px at 80% 10%, rgba(59,130,246,0.12), transparent 50%),
+		var(--surface);
+	color: var(--text);
+	font-feature-settings: 'ss01' 1, 'ss02' 1, 'cv01' 1;
+}
+
+.container-content {
+	@apply container max-w-content;
+}
+
+.gradient-text {
+	background: var(--brand);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.section {
+	@apply py-16 md:py-24;
+}
+
+.card {
+	@apply rounded-lg bg-elev1 border border-border-subtle shadow-soft;
+}
+
+a {
+	@apply underline-offset-4 decoration-transparent transition-[text-decoration-color,color] duration-200;
+}
+
+a:hover {
+	@apply decoration-current;
+}
