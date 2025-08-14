@@ -1,0 +1,99 @@
+---
+title: "How to build a social analytics workflow your team actually uses"
+excerpt: "A step‑by‑step system for turning streams of social metrics into decisions your team makes every week."
+author: "PulseTrack Team"
+date: "2025-07-01"
+tags: ["analytics","process","workflows"]
+---
+
+# Start with the weekly question
+
+Most teams track more than they can use. The antidote is a weekly question: what changed and what should we do next? Everything in your workflow should ladder up to answering that. The question clarifies what to collect, how to visualize it, and which decisions matter.
+
+## Step 1: Normalize your metrics
+
+If you publish across Twitter, Instagram, TikTok, and LinkedIn, the same word means different things. Normalize first so everyone speaks the same language.
+
+- Impressions: total views
+- Engagements: likes + comments + shares (platform‑specific interactions rolled up)
+- CTR: link clicks ÷ impressions
+- Conversions: downstream actions attributed to the post
+
+Create a simple mapping:
+
+```ts
+// metrics.ts
+export type Normalized = {
+  impressions: number;
+  engagements: number;
+  ctr: number; // 0..1
+  conversions: number;
+};
+
+export function normalizeTwitter(raw: any): Normalized {
+  return {
+    impressions: raw.impression_count,
+    engagements: raw.like_count + raw.reply_count + raw.retweet_count,
+    ctr: raw.url_clicks / Math.max(1, raw.impression_count),
+    conversions: raw.attributed_conversions || 0,
+  };
+}
+```
+
+The exact mapping is less important than agreeing on it. Document the definitions where everyone can find them.
+
+## Step 2: Decide your “pulse” cadence
+
+A pulse is the smallest interval that still feels live for your team. For most growth teams, 5–15 minutes is perfect. Too fast and you react to noise; too slow and you miss momentum. PulseTrack uses a 5‑second simulation in the demo so you can feel the concept.
+
+## Step 3: Create a highlights stream
+
+Streams beat dashboards. Have a small surface where the most notable changes appear: a post breaking out, a baseline drop, a week‑over‑week improvement. Keep the rules transparent and adjustable.
+
+- New high for CTR in the last 30 days
+- Engagement spike > 2 standard deviations above hourly baseline
+- Conversions > threshold for paid support
+
+This turns your pulse from “interesting” to “actionable.”
+
+## Step 4: Design for the weekly review
+
+Every week, the team asks the question again—what changed and what should we do next? The review should take under an hour.
+
+- What are the top 3 posts by conversions and why?
+- Which experiments should we repeat or stop?
+- What’s our plan for next week’s content?
+
+Use a simple template and store it in your tool so you build a record of decisions, not just charts.
+
+```md
+# Weekly review – Week 34
+- Outcome: +18% conversions WoW
+- Signals: Two short videos outperformed; LinkedIn carousels underperformed
+- Decision: Double down on short video; pause carousels; test alt text on Twitter
+```
+
+## Step 5: Schedule exports for stakeholders
+
+Executives and sales do not want to log into your analytics. They want the narrative. Automate a short email export that summarizes highlights, key charts, and decisions. Consistency matters more than perfect formatting.
+
+## Step 6: Keep latency visible
+
+The fastest way to erode trust is hidden lag. If your pipeline has five‑minute delays, show it. A small “last update” indicator sets expectations and reduces second‑guessing.
+
+## Step 7: Close the loop with creation
+
+Insights without action are trivia. Make it easy to take the next step: share a highlight, comment with context, or create a task. The handoff should be one click.
+
+## Common pitfalls
+
+- Tracking every metric: prioritize the few that change decisions
+- Static dashboards: move to a pulse + highlights model
+- Undefined ownership: assign a DRI for the weekly review
+- Unclear definitions: write them down and link inline
+
+## The payoff
+
+Teams that adopt this workflow report three consistent benefits: faster cycles, fewer debates, and stronger creative iteration. PulseTrack bakes these ideas into the product so the workflow feels natural.
+
+If you want a starting point, open the demo dashboard and mimic the cadence here. Add your team’s review questions and adjust the pulse until it feels right.
